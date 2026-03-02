@@ -1,31 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
+  const location = useLocation();
+
   return (
-    <div className="navbar">
-      <div
-        style={{
-          maxWidth: "900px",
-          margin: "0 auto",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Link
-          to="/"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontWeight: "600",
-            fontSize: "20px",
-            letterSpacing: "1px",
-          }}
-        >
+    <nav className="navbar">
+      <div className="nav-inner">
+        <Link to="/" className="brand">
           GitHub Dashboard
         </Link>
+
+        <div className="nav-links">
+          <Link
+            to="/"
+            className={
+              location.pathname === "/" ? "nav-link active" : "nav-link"
+            }
+          >
+            Home
+          </Link>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }
 

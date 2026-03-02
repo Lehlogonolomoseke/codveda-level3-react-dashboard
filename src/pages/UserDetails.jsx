@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getUser, getRepos } from "../services/githubService";
+import { motion } from "framer-motion";
 
 function UserDetails() {
   const { username } = useParams();
@@ -10,25 +11,41 @@ function UserDetails() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchData = async () => {
       try {
+        if (!isMounted) return;
         setLoading(true);
         setError("");
 
         const userData = await getUser(username);
         const repoData = await getRepos(username);
 
+        if (!isMounted) return;
         setUser(userData);
         setRepos(repoData);
       } catch (err) {
-        setError(err.message);
-      }
-
-      setLoading(false);
+        if (!isMounted) return;
+        setError(err.message || "Something went wrong");
+      } finally {
+        if (!isMounted) return;
+        setLoading(false);
+      } 
     };
 
     fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [username]);
+
+  const topRepos = useMemo(() => {
+    return [...repos]
+      .sort((a, b) => b.stargazers_count - a.stargazers_count)
+      .slice(0, 12);
+  }, [repos]);
 
   if (loading) {
     return (
@@ -54,17 +71,39 @@ function UserDetails() {
     );
   }
 
-  const topRepos = [...repos]
-    .sort((a, b) => b.stargazers_count - a.stargazers_count)
-    .slice(0, 12);
+  if (!user) {
+    return (
+      <div className="container">
+        <Link to="/" className="back-button">
+          ← Back to Search
+        </Link>
+
+        <div className="card">
+          <p className="muted" style={{ margin: 0 }}>
+            No user data available.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container">
+    <motion.div
+      className="container"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+    >
       <Link to="/" className="back-button">
         ← Back to Search
       </Link>
 
-      <div className="card">
+      <motion.div
+        className="card"
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2 }}
+      >
         <h2>{user.name || user.login}</h2>
 
         <img
@@ -72,6 +111,7 @@ function UserDetails() {
           alt="avatar"
           width="120"
           className="avatar"
+          loading="lazy"
         />
 
         {user.bio ? (
@@ -85,19 +125,29 @@ function UserDetails() {
 
         {user.html_url && (
           <div className="action-row">
-            <a href={user.html_url} target="_blank" className="primary-link">
+            <a
+              href={user.html_url}
+              target="_blank"
+              rel="noreferrer"
+              className="primary-link"
+            >
               View GitHub Profile
             </a>
           </div>
         )}
-      </div>
+      </motion.div>
 
       <div className="card">
         <h3>Top Repositories (by Stars)</h3>
 
         <div className="repo-grid">
           {topRepos.map((repo) => (
-            <div key={repo.id} className="repo-card">
+            <motion.div
+              key={repo.id}
+              className="repo-card"
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 320, damping: 22 }}
+            >
               <Link
                 to={`/repo/${username}/${encodeURIComponent(repo.name)}`}
                 className="repo-link"
@@ -117,7 +167,7 @@ function UserDetails() {
                     : repo.description}
                 </p>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -127,7 +177,7 @@ function UserDetails() {
           </p>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

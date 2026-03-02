@@ -1,26 +1,84 @@
+/* ===== Base ===== */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #eef2ff, #f8fafc);
   min-height: 100vh;
+  color: #0f172a;
 }
 
+/* ===== Navbar (Updated for new Navbar.jsx) ===== */
 .navbar {
-  background: #0f172a;
-  color: white;
-  padding: 20px;
-  font-size: 22px;
-  font-weight: 600;
-  text-align: center;
-  letter-spacing: 1px;
+  background: linear-gradient(90deg, #0f172a, #1e293b);
+  padding: 18px 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
+.nav-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.8px;
+  transition: opacity 0.2s ease;
+}
+
+.brand:hover {
+  opacity: 0.85;
+}
+
+.nav-links {
+  display: flex;
+  gap: 14px;
+}
+
+.nav-link {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+/* ===== Layout ===== */
 .container {
   max-width: 900px;
   margin: 50px auto;
   padding: 20px;
 }
 
+h1,
+h2,
+h3 {
+  margin-top: 0;
+}
+
+/* ===== Card ===== */
 .card {
   background: white;
   padding: 25px;
@@ -34,12 +92,7 @@ body {
   transform: translateY(-3px);
 }
 
-h1,
-h2,
-h3 {
-  margin-top: 0;
-}
-
+/* ===== Form Elements ===== */
 input {
   padding: 12px;
   width: 260px;
@@ -51,6 +104,7 @@ input {
 
 input:focus {
   border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 button {
@@ -69,6 +123,12 @@ button:hover {
   background: #1e40af;
 }
 
+/* Optional: remove left margin for history buttons */
+.history-btn {
+  margin: 0;
+}
+
+/* ===== Repo Grid ===== */
 .repo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -90,21 +150,21 @@ button:hover {
 
 .repo-link {
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   color: #1d4ed8;
 }
 
+.repo-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== Links / Buttons ===== */
 .back-link {
   text-decoration: none;
   color: #2563eb;
   font-size: 14px;
 }
 
-.avatar {
-  border-radius: 50%;
-  margin: 15px 0;
-  border: 4px solid #e0e7ff;
-}
 .back-button {
   display: inline-block;
   padding: 10px 14px;
@@ -121,6 +181,14 @@ button:hover {
   background: #d1d5db;
 }
 
+/* ===== Avatar ===== */
+.avatar {
+  border-radius: 50%;
+  margin: 15px 0;
+  border: 4px solid #e0e7ff;
+}
+
+/* ===== Search History ===== */
 .history-list {
   display: flex;
   flex-wrap: wrap;
@@ -128,9 +196,7 @@ button:hover {
   margin-top: 12px;
 }
 
-.history-btn {
-  margin: 0;
-}
+/* ===== Repo Details ===== */
 .detail-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -187,4 +253,12 @@ button:hover {
 
 .secondary-link:hover {
   background: #d1d5db;
+}
+
+/* ===== Loading state (used in App.jsx Suspense fallback) ===== */
+.state {
+  text-align: center;
+  padding: 18px;
+  color: #64748b;
+  font-weight: 600;
 }
