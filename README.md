@@ -25,19 +25,19 @@ The application is an advanced React dashboard that allows users to search GitHu
 
 ### Home Page
 
-![Home](./screenshots/home.png)
+![Home](./screenshots/home.jpeg)
 
 ### User Details
 
-![User](./screenshots/user_details.png)
+![User](./screenshots/user_details.jpeg)
 
 ### Repository Details
 
-![Repository](./screenshots/repo_details.png)
+![Repository](./screenshots/repo_details.jpeg)
 
 ### User Not Found
 
-![User Not Found](./screenshots/user_not_found.png)
+![User Not Found](./screenshots/user_not_found.jpeg)
 
 ---
 
